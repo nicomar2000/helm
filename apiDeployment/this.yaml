@@ -1,0 +1,40 @@
+deploymentType: jenkinsv1
+namespace: test-api-dev2
+nameOverride: test-api-dev
+ingress:
+  enabled: false
+container:
+  readinessprobe:
+    path: /test
+    port: 80
+  port: 80
+  env:
+  - name: db_user
+    value: admin
+  - name: api
+    value: 'false'
+  - name: db-password
+    valueFrom:
+      secretKeyRef:
+        name: test-api-dev
+        key: db-password
+  - name: token
+    valueFrom:
+      secretKeyRef:
+        name: test-api-dev
+        key: token
+image:
+  repository_name: test-api-dev
+  tag: staging
+service:
+  port: 80
+buildNumber: '51'
+secrets:
+- name: test-api-dev
+  content:
+  - key: db-password
+    data: ssmsecret_db-password
+  - key: token
+    data: ssmsecret_token
+git_commit: 13dd1d3
+

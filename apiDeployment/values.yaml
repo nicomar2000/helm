@@ -1,0 +1,101 @@
+namespace: default
+buildNumber: 0
+git_commit: 0
+nameOverride: ""
+replicaCount: 1
+
+image:
+  repository_url: "076507149172.dkr.ecr.us-east-2.amazonaws.com"
+  repository_name: ""
+  tag: "latest"
+  pullPolicy: Always
+  
+imagePullSecrets: []
+fullnameOverride: ""
+
+container:
+  port: 3000
+  readinessprobe:
+    port: 3000
+    path:
+
+serviceAccount:
+  # no template for this, but specify for the PODs
+  create: false
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: 
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":443}]'
+    alb.ingress.kubernetes.io/certificate-arn: ''
+    alb.ingress.kubernetes.io/group.name: general
+  hosts: []
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 2
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+secrets: 
+  # - name: password
+  #   content:
+  #   - key: sql
+  #     data: '123456'
+  #   - key: jwk
+  #     data: abcd
+  # - name: db
+  #   content:
+  #   - key: url
+  #     data: 'http://someurl.com'
+  #   - key: password
+  #     data: secure123
+volumeMounts:  []
+volumes:  []
